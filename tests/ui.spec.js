@@ -1,6 +1,6 @@
 import { test, expect, describe } from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage} from '../framework/pages/pages_objects'
+import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage, mainPage} from '../framework/pages/pages_objects'
 describe('Тесты навигации', () => {
   let page;
 
@@ -28,7 +28,9 @@ describe('Тесты навигации', () => {
   });
 
   // Тесты
-
+  test ('Переход на главную', async () => {
+    await mainPage(page).assertMainVisible();
+  }) 
   test('Переход на страницу Лобби', async () => {
     // Переходим на страницу Лобби
     await lobbyPage(page).goto();

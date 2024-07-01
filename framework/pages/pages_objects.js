@@ -1,6 +1,23 @@
 
 import { expect } from '@playwright/test';
-import { assert } from 'console';
+
+// Главная
+export function mainPage (page) {
+    return {
+        async assertMainVisible () {
+            await expect(page.getByRole('main')).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Новинки' })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Слоты' })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Live', exact: true })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Джекпот', exact: true })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Instant Win' })).toBeVisible();
+            await expect(page.getByRole('link', { name: 'Рулетка' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Новые игры' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Популярные игры' })).toBeVisible();
+        }
+    }
+}
+
 // Лобби
 export function lobbyPage(page) {
     return {
