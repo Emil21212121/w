@@ -1,6 +1,7 @@
 import { test, expect, describe } from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage, mainPage} from '../framework/pages/pages_objects'
+import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage, mainPage, gameCategory, lobbyCategoryList, lobbyProviderList} from '../framework/pages/pages_objects';
+
 describe('Тесты навигации', () => {
   let page;
 
@@ -40,6 +41,16 @@ describe('Тесты навигации', () => {
     await lobbyPage(page).assertLobbyVisible();
     
   });
+  
+  test ('Выпадающий список Категорий игр', async () => {
+    await lobbyCategoryList(page).categoryList();
+    await lobbyCategoryList(page).categoryListVisible();
+  });
+
+  test ('Выпадающий список Провайдеров', async () => {
+    await lobbyProviderList(page).providerList();
+    await lobbyProviderList(page).providerListVisible();
+  }) 
 
   test('Переход на страницу Гонка', async () => {
     // Переход на страницу Гонка
@@ -118,8 +129,43 @@ describe('Тесты навигации', () => {
    await partnerPage(page).accrualLogCectionVisible();
 
   });
+
+  // Переход по категориям игр
   
-  test.afterAll(async () => {
+  test ('Категории игр', async () => {
+
+    // Категория Slots
+    await gameCategory(page).slotsCategory();
+    await gameCategory(page).slotsCategoryVisible();
+
+    // Категория Live игры
+    await gameCategory(page).liveGameCategory();
+    await gameCategory(page).liveGameCategoryVisible();
+
+    // Категория Jackpots
+    await gameCategory(page).jackpotCategory();
+    await gameCategory(page).jackpotCategoryVisible();
+
+     // Категория Instant Win
+     await gameCategory(page).instantWinCategory()
+     await gameCategory(page).instantWinCategoryVisible()
+
+     // Категория Рулетка
+     await gameCategory(page).instantWinCategory()
+     await gameCategory(page).instantWinCategoryVisible()
+
+     // Категория Blackjack
+     await gameCategory(page).blackJackCategory();
+     await gameCategory(page).blackJackCategoryVisible();
+
+    // Категория Bonus buy
+    await gameCategory(page).bonusBuyCategory();
+    await gameCategory(page).bonusBuyCategoryVisible()
+
+  });
+
+  
+ test.afterAll(async () => {
     // Закрыть страницу
     await page.close();
   });
@@ -145,3 +191,16 @@ test('Переход на Буст', async () => {
   await expect(page.locator('div').filter({ hasText: /^Буст$/ })).toBeVisible();
   await page.locator('._modal-close_9g9mb_3581').click();
 });*/
+
+
+
+
+
+
+
+
+
+
+
+
+

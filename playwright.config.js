@@ -1,14 +1,24 @@
 const { defineConfig, devices } = require('@playwright/test');
+const { PlaywrightTestAllureReporter } = require('allure-playwright');
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+// require('dotenv').config();setx JAVA_HOME "C:\Program Files\Java\jdk-22"
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+devices['Mobile Chrome'] = {
+  browserName: 'webkit', // Используем 'webkit' для поддержки Safari
+  'goog:chromeOptions': {
+    mobileEmulation: {
+      deviceName: 'iPhone X' // Например, эмулируем iPhone X
+      // Другие настройки для мобильной эмуляции
+    }
+  }
+};
 module.exports = defineConfig({
   testDir: 'tests',
   // Run tests in files in parallel
@@ -20,7 +30,10 @@ module.exports = defineConfig({
   // Opt out of parallel tests on CI.
   workers: 1,
   // Reporter to use. See https://playwright.dev/docs/test-reporters
-  reporter: 'html',
+  reporter: [
+    ['allure-playwright', { outputDir: './allure-results' }]
+  ],
+
   // Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions.
   use: {
     // Base URL to use in actions like `await page.goto('/')`.
@@ -29,12 +42,12 @@ module.exports = defineConfig({
     // Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer
     trace: 'on-first-retry',
     launchOptions: {
-      slowMo: 3000,
+      slowMo: 2000,
       args: ['--lang=ru-RU']
     },
     
     // Run in headed mode (with GUI)
-    headless: false,
+    headless: false, 
   },
 
   // Configure projects for major browsers
@@ -46,8 +59,18 @@ module.exports = defineConfig({
         // Run in headed mode (with GUI)
         
       }
+    },
+    {
+      name: 'chromium-mobile',
+      use: {
+        ...devices['Mobile Chrome'], // Предположим, что 'Mobile Chrome' определен в вашем объекте devices
+        // Настройки для мобильной версии (Mobile Chrome)
+        headless: true, // Пример: запуск в headless режиме для мобильной версии
+        // Другие настройки для мобильной версии
+      }
     }
   ],
+  
 
   // Run your local dev server before starting the tests
   // webServer: {

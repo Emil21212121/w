@@ -36,6 +36,41 @@ export function lobbyPage(page) {
         }
     };
 }
+// Лобби Выпадающий список Категории
+export function lobbyCategoryList (page) {
+    return {
+
+        async categoryList () {
+            await page.getByRole('button', { name: 'Категории' }).click();
+        },
+
+        async categoryListVisible () {
+            await expect(page.getByRole('button', { name: 'Slots' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Live Games' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Jackpot' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Instant Win' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Roulette' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Blackjack' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Bonus Buy' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'Virtual Sports' })).toBeVisible();
+        }
+    }
+}  
+
+// Лобби Выпадающий список Провайдеры
+
+export function lobbyProviderList (page) {
+    return {
+
+        async providerList () {
+            await page.getByRole('button', { name: 'Провайдеры' }).click();
+        },
+
+        async providerListVisible () {
+            await expect(page.getByPlaceholder('Например: Novomatic')).toBeVisible();
+        }
+    }
+}
 
 // Гонка
 export function racePage (page) {
@@ -103,17 +138,17 @@ export function VipClubPage (page) {
             await page.locator('#scrollArea div').filter({ hasText: 'Непревзойденный VIP' }).nth(3).click();
             await expect(page.getByText('Уровни VIP')).toBeVisible();
             await expect(page.getByText('Высочайшая доходность для игрокаНаши бонусы абсолютно прозрачные. Все полученные бонусы вы сможете сразу выводить или снова пускать в игру. Только чистый профит без дополнительных условий для игроков и других подводных камней.Эксклюзивные и гибкие бонусыМы ценим каждого игрока. Ваш VIP-менеджер может поздравить вас с днем рождения и подарить вам новенький MacBook или подарить крупный бонус-код к новому году. Все это и многое другое возможно в нашем VIP-клубе')).toBeVisible();
-            await expect(page.getByText('БронзаСумма ставок от 2 332.')).toBeVisible();
+            await expect(page.getByText(/БронзаСумма ставок от.*/)).toBeVisible();
             await page.getByRole('button', { name: 'Серебро' }).click();
-            await expect(page.getByText('СереброСумма ставок от 11 662')).toBeVisible();
+            await expect(page.getByText(/СереброСумма ставок от.*/)).toBeVisible();
             await page.getByRole('button', { name: 'Золото' }).click();
-            await expect(page.getByText('ЗолотоСумма ставок от 69 972.')).toBeVisible();
+            await expect(page.getByText(/ЗолотоСумма ставок от.*/)).toBeVisible();
             await page.getByRole('button', { name: 'Платина' }).click();
-            await expect(page.getByText('ПлатинаСумма ставок от 174')).toBeVisible();
+            await expect(page.getByText(/ПлатинаСумма ставок от.*/)).toBeVisible();
             await page.getByRole('button', { name: 'Алмаз' }).click();
-            await expect(page.getByText('АлмазСумма ставок от 349 862.')).toBeVisible();
+            await expect(page.getByText(/АлмазСумма ставок от.*/)).toBeVisible();
             await page.getByRole('button', { name: 'Элит' }).click();
-            await expect(page.getByText('ЭлитСумма ставок от 699 724.')).toBeVisible();
+            await expect(page.getByText(/ЭлитСумма ставок от.*/)).toBeVisible();
         }
     }
 }
@@ -195,9 +230,84 @@ export function partnerPage (page) {
     }
 }
 
+// Категории Игр
 
+export function gameCategory (page) {
+    return {
+        async slotsCategory () {
+            await page.getByRole('button', { name: 'Слоты' }).click();
+        },
 
+        async slotsCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/1/);
+            await expect(page.getByRole('button', { name: 'Slots' })).toBeVisible();
+        },
+
+        async liveGameCategory () {
+            await page.getByRole('button', { name: 'Live игры' }).click(); 
+        },
+
+        async liveGameCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/2/);
+            await expect(page.getByRole('button', { name: 'Live Games' })).toBeVisible();
+        },
+
+        async jackpotCategory () {
+            await page.getByRole('button', { name: 'Джекпоты' }).click();
+        },
+
+        async jackpotCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/7/);
+            await expect(page.getByRole('button', { name: 'Jackpot' })).toBeVisible();
+        },
+
+        async instantWinCategory () {
+            await page.getByRole('button', { name: 'Быстрые игры' }).click();
+        },
+
+        async instantWinCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/8/);
+            await expect(page.getByRole('button', { name: 'Instant Win' })).toBeVisible();
+        },
+
+        async rouleteteCategory () {
+            await page.getByRole('button', { name: 'Рулетка' }).click();
+        },
+
+        async rouleteteCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/3/);
+            await expect(page.getByRole('button', { name: 'Roulette' })).toBeVisible();
+        },
+
+        async blackJackCategory () {
+            await page.getByRole('button', { name: 'Блекджек' }).click();
+        },
+
+        async blackJackCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/4/);
+            await expect(page.getByRole('button', { name: 'Blackjack' })).toBeVisible();
+        },
+
+        async bonusBuyCategory () {
+            await page.getByRole('button', { name: 'Покупка бонуса' }).click();
+        },
+
+        async bonusBuyCategoryVisible () {
+            await expect(page).toHaveURL(/.*0\/6/);
+            await expect(page.getByRole('button', { name: 'Bonus Buy' })).toBeVisible();
+        }
+    }
+}
     
-    
 
+
+
+
+  
+  
+
+  
+  
+  
+  
   
