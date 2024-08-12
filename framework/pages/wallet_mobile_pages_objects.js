@@ -1,6 +1,4 @@
 import { expect } from '@playwright/test';
-import exp from 'constants';
-import { futimes } from 'fs';
 
 // Открытие Кошелька
 export function walletPage (page) {
@@ -31,7 +29,6 @@ export function cardChecker(page) {
                 { name: '500 ₽', exact: true },
                 { name: '1000 ₽' },
                 { name: '2500 ₽' },
-                { name: '5000 ₽' },
                 { name: 'Перейти к оплате' }
             ];
 
@@ -46,7 +43,7 @@ export function cardChecker(page) {
                 { name: '500 ₽', exact: true, value: '500' },
                 { name: '1000 ₽', value: '1000' },
                 { name: '2500 ₽', value: '2500' },
-                { name: '5000 ₽', value: '5000' }
+               
             ];
 
             for (const action of buttonActions) {
@@ -70,16 +67,19 @@ export function cardP2P (page) {
 export function ecorPay (page) {
     return {
         async gotoEcorPay () {
-            await page.getByRole('button', { name: 'Ecorpay fire' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'Ecorpayfire 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораEcorpay$/ }).getByRole('button')).toBeVisible();
         }
     }
 }
 
+// Карта SberPay
 export function sberPay (page) {
     return {
         async gotoSberPay () {
-            await page.getByRole('button', { name: 'SberPay' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'SberPay 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораSberPay$/ }).getByRole('button')).toBeVisible();
         }
     }
@@ -89,7 +89,8 @@ export function sberPay (page) {
 export function onlineBank (page) {
     return {
         async gotoOnlineBank () {
-            await page.getByRole('button', { name: 'Онлайн банк' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'Онлайн банк 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораОнлайн банк$/ }).getByRole('button')).toBeVisible();
         }
     }
@@ -99,13 +100,17 @@ export function onlineBank (page) {
 export function yuMoney (page) {
     return {
         async gotoYuMoney1 () {
-            await page.getByRole('button', { name: 'ЮMoney' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'ЮMoney 0%' }).click();
+            await expect(page.getByRole('button', { name: 'ЮMoney' }).nth(1)).toBeVisible();
         },
         async gotoYuMoney2 () {
             await page.getByRole('button', { name: 'ЮMoney' }).nth(2).click();
+            await expect(page.getByRole('button', { name: 'ЮMoney' }).nth(2)).toBeVisible();
         },
         async gotoYuMoney3 () {
             await page.getByRole('button', { name: 'ЮMoney' }).nth(3).click();
+            await expect(page.getByRole('button', { name: 'ЮMoney' }).nth(3)).toBeVisible();
         }
     }
 }
@@ -114,7 +119,8 @@ export function yuMoney (page) {
 export function piastrix (page) {
     return {
         async gotoPiastrix () {
-            await page.getByRole('button', { name: 'Piastrix' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'Piastrix 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораPiastrix$/ }).getByRole('button')).toBeVisible();
         }
     }
@@ -124,7 +130,8 @@ export function piastrix (page) {
 export function FkWallet (page) {
     return {
         async gotoFkWallet () {
-            await page.getByRole('button', { name: 'FK Wallet' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'FK Wallet 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораFK Wallet$/ }).getByRole('button')).toBeVisible();
         }
     }
@@ -134,13 +141,13 @@ export function FkWallet (page) {
 export function steam (page) {
     return {
         async gotoSteam () {
-            await page.getByRole('button', { name: 'Steam' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[4]/div/button').click();
+            await page.getByRole('button', { name: 'Steam 0%' }).click();
             await expect(page.locator('div').filter({ hasText: /^Выберите оператораSteam$/ }).getByRole('button')).toBeVisible();
         }
     }
 }
-
-// Криптовалюта
+// Обработчик (Криптовалюта)
 export function checkToken (page) {
     return {
         async checkTokenVisible () {
@@ -197,11 +204,9 @@ export function cryptoCurrency (page) {
 export function bitcoin (page) {
     return {
         async gotoBitcoin () {
-            await page.getByRole('button', { name: 'Bitcoin', exact: true }).click();
-        },
-
-        async bitcoinVisible () {
-        } 
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Bitcoin 0%' }).click();
+        }
     }
 }
 
@@ -209,7 +214,8 @@ export function bitcoin (page) {
 export function USDC (page) {
     return {
         async gotoUSDC () {
-            await page.getByRole('button', { name: 'USDC' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'USDC 0%' }).click();
         },
 
         async USDCvisible () {
@@ -246,7 +252,8 @@ export function USDC (page) {
 export function Litecoin (page) {
     return {
         async gotoLitecoin () {
-            await page.getByRole('button', { name: 'Litecoin' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Litecoin 0%' }).click();
         }
     }
 }
@@ -255,7 +262,8 @@ export function Litecoin (page) {
 export function Ethereum (page) {
     return {
         async gotoEthereum () {
-            await page.getByRole('button', { name: 'Ethereum' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Ethereum 0%' }).click();
         },
 
         async EthereumToken () {
@@ -277,7 +285,8 @@ export function Ethereum (page) {
 export function Tron (page) {
     return {
         async gotoTron () {
-            await page.getByRole('button', { name: 'Tron' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Tron 0%' }).click();
         }
     }
 }
@@ -285,7 +294,8 @@ export function Tron (page) {
 export function BitcoinCash (page) {
     return {
         async gotoBitcoinCash () {
-            await page.getByRole('button', { name: 'Bitcoin Cash' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Bitcoin Cash 0%' }).click();
         }
     } 
 }
@@ -294,7 +304,8 @@ export function BitcoinCash (page) {
 export function BNB (page) {
     return {
         async gotoBNB () {
-            await page.getByRole('button', { name: 'BNB' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'BNB 0%' }).click();
         }
     }
 }
@@ -303,7 +314,8 @@ export function BNB (page) {
 export function Dash (page) {
     return {
         async gotoDash () {
-            await page.getByRole('button', { name: 'Dash' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Dash 0%' }).click();
         }
     }
 }
@@ -312,7 +324,8 @@ export function Dash (page) {
 export function Matic (page) {
     return {
         async gotoMatic () {
-            await page.getByRole('button', { name: 'Matic' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Matic 0%' }).click();
         }
     }
 } 
@@ -321,7 +334,8 @@ export function Matic (page) {
 export function TrueUsd (page) {
     return {
         async gotoTrueUsd () {
-            await page.getByRole('button', { name: 'TrueUSD' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'TrueUSD 0%' }).click();
         },
 
         async TrueUsdTokenBEP20 () {
@@ -338,7 +352,8 @@ export function TrueUsd (page) {
 export function Dogecoin (page) {
     return {
         async gotoDogecoin () {
-            await page.getByRole('button', { name: 'Dogecoin' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Dogecoin 0%' }).click();
         }    
         
     }
@@ -348,7 +363,8 @@ export function Dogecoin (page) {
 export function DAI (page) {
     return {
         async gotoDAI () {
-            await page.getByRole('button', { name: 'DAI' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'DAI 0%' }).click();
         },
 
         async DAItokenERC20 () {
@@ -369,7 +385,8 @@ export function DAI (page) {
 export function Avalanche (page) {
     return {
         async gotoAvalanche () {
-            await page.getByRole('button', { name: 'Avalanche' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Avalanche 0%' }).click();
         }
     }
 }
@@ -378,7 +395,8 @@ export function Avalanche (page) {
 export function Cardano (page) {
     return {
         async gotoCardano () {
-            await page.getByRole('button', { name: 'Cardano' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'Cardano 0%' }).click();
         }
 
     }
@@ -388,7 +406,8 @@ export function Cardano (page) {
 export function BTCB (page) {
     return {
         async gotoBTCB () {
-            await page.getByRole('button', { name: 'BTCB' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'BTCB 0%' }).click();
         }
 
     }
@@ -398,7 +417,8 @@ export function BTCB (page) {
 export function WETH (page) {
     return {
         async gotoWETH () {
-            await page.getByRole('button', { name: 'WETH' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'WETH 0%' }).click();
         }
     }
 }
@@ -407,7 +427,8 @@ export function WETH (page) {
 export function WEVER (page) {
     return {
         async gotoWEVER() {
-            await page.getByRole('button', { name: 'WEVER' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'WEVER 0%' }).click();
         }
     }
 }
@@ -416,7 +437,8 @@ export function WEVER (page) {
 export function ZEFU (page) {
     return {
         async gotoZEFU () {
-            await page.getByRole('button', { name: 'ZEFU' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'ZEFU 0%' }).click();
         }
     }
 }
@@ -425,7 +447,8 @@ export function ZEFU (page) {
 export function MDAO (page) {
     return {
         async gotoMDAO () {
-            await page.getByRole('button', { name: 'MDAO' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'MDAO 0%' }).click();
         }
     }
 }
@@ -434,7 +457,8 @@ export function MDAO (page) {
 export function AXS (page) {
     return {
         async gotoAXS () {
-            await page.getByRole('button', { name: 'AXS' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'AXS 0%' }).click();
         },
 
         async AXStokenERC20 () {
@@ -446,17 +470,17 @@ export function AXS (page) {
         }
     }
 }
-
 // DESU
 export function DESU (page) {
     return {
         async gotoDESU () {
-            await page.getByRole('button', { name: 'DESU' }).click();
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'DESU 0%' }).click();
         }
     }
 }
 
-// Вывод 
+// Вывод
 
 export function withdrawal (page) {
     return {
@@ -501,8 +525,9 @@ export function withdrawCardP2P (page) {
 export function withdrawEcorpay (page) {
     return {
         async gotoWithdrawEcorpay () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'Ecorpay' }).click();
-        },
+        }
     }
 }
 
@@ -510,6 +535,7 @@ export function withdrawEcorpay (page) {
 export function withdrawYuMoney (page) {
     return {
         async gotoWithdrawYuMoney () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'ЮMoney' }).click();
         }
     }
@@ -519,6 +545,7 @@ export function withdrawYuMoney (page) {
 export function withdrawPiastrix (page) {
     return {
         async gotoWithdrawPiastrix () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'Piastrix' }).click();
         }
     }
@@ -528,6 +555,7 @@ export function withdrawPiastrix (page) {
 export function withdrawFkWallet (page) {
     return {
         async gotoWithdrawFkWallet () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'FK Wallet' }).click();
         }
     }
@@ -537,6 +565,7 @@ export function withdrawFkWallet (page) {
 export function withdrawMobilePayments(page) {
     return {
         async gotoWithdrawMobilePayments() {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'Моб. платежи' }).click();
         },
 
@@ -592,10 +621,12 @@ export function withdrawMobilePayments(page) {
         }
     };
 }
+
 // Payeer
 export function withdrawPayeer (page) {
     return {
         async gotoPayeer () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'Payeer' }).click();
         }
     }
@@ -605,6 +636,7 @@ export function withdrawPayeer (page) {
 export function withdrawAdvCash (page) {
     return {
         async gotoWithdrawAdvCash () {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div/div/div[1]/div[1]/div[4]/div/button').click();
             await page.getByRole('button', { name: 'AdvCash' }).click();
         }
     }

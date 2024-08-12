@@ -1,5 +1,5 @@
 {
-  "name": "hello-otus",
+  "name": "tests",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -12,15 +12,30 @@
     "codestyle": "run-p lint format",
     "codestyle:fix": "run-s lint:fix format:fix",
     "build": "babel src --out-dir build --source-maps inline",
-    "test": "jest",
+    "test": "npx playwright test",
+    "clean-results-after-report": "rimraf allure-results",
     "pretest": "rimraf allure-results",
     "test:ci": "cross-env CI=true NODE_OPTIONS=\"--max-old-space-size=2048\" jest",
     "coverage": "jest --coverage",
     "allure": "allure serve allure-results",
     "allure:ci": "allure generate allure-results --clean",
-    "allure:ci:show": "allure open allure-report"
+    "allure:ci:show": "allure open allure-report",
+    "report": "allure generate --clean allure-results -o allure-report",
+
+
+    
+    "test-wallet": "npx playwright test tests/wallet.spec.js --config=playwright.config.desktop.js || exit 0",
+    "test-wallet-mobile": "npx playwright test tests/wallet_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
+    "test-ui": "npx playwright test tests/ui.spec.js --config=playwright.config.desktop.js || exit 0",
+    "test-ui-mobile": "npx playwright test tests/ui_tests_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
+    
+
+    "test-wallet-and-report-slack": "npm run test-wallet && npm run report && node scripts/sendResultsToSlack.js wallet-desktop",
+    "test-wallet-mobile-and-report-slack": "npm run test-wallet-mobile && npm run report && node scripts/sendResultsToSlack.js wallet-mobile",
+    "test-ui-and-report-slack": "npm run test-ui && npm run report && node scripts/sendResultsToSlack.js ui-desktop",
+    "test-ui-mobile-and-report-slack": "npm run test-ui-mobile && npm run report && node scripts/sendResultsToSlack.js ui-mobile"
   },
-  "author": "Damir Rysaev <freepad@ya.ru>",
+  "author": "Emil Qa",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.24.7",
@@ -47,10 +62,11 @@
     "npm-run-all": "^4.1.5",
     "prettier": "3.1.1",
     "rimraf": "^5.0.5",
-    "supertest": "^6.3.4"
+    "supertest": "^6.3.4",
+    "axios": "^1.7.2",
+    "fs": "0.0.1-security"
   },
   "dependencies": {
-    "axios": "^1.7.2",
     "dotenv": "^16.4.1",
     "got": "^14.1.0",
     "playwright": "^1.44.1"

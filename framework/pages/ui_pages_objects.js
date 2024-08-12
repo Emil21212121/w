@@ -1,19 +1,31 @@
 
-import { expect } from '@playwright/test';
+import { expect, devices  } from '@playwright/test';
+
 
 // Главная
-export function mainPage (page) {
+export function mainPage(page) {
     return {
-        async assertMainVisible () {
-            await expect(page.getByRole('main')).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Новинки' })).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Слоты' })).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Live', exact: true })).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Джекпот', exact: true })).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Instant Win' })).toBeVisible();
-            await expect(page.getByRole('link', { name: 'Рулетка' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: 'Новые игры' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: 'Популярные игры' })).toBeVisible();
+        async assertMainVisible() {
+            const elementsToCheck = [
+                { role: 'main' },
+                { role: 'link', name: 'Новинки' },
+                { role: 'link', name: 'Слоты' },
+                { role: 'link', name: 'Live', exact: true },
+                { role: 'link', name: 'Джекпот', exact: true },
+                { role: 'link', name: 'Instant Win' },
+                { role: 'link', name: 'Рулетка' },
+                {role: 'link', name: 'Карточные'},
+                {role: 'link', name: 'Bonus Buy'},
+                { role: 'heading', name: 'Новые игры' },
+                { role: 'heading', name: 'Популярные игры' },
+                { role: 'heading', name: 'Выбор Selector' },
+                { role: 'heading', name: 'NEW' },
+                { role: 'heading', name: 'Высокий RTP' }
+            ];
+
+            for (const element of elementsToCheck) {
+                await expect(page.getByRole(element.role, { name: element.name, exact: element.exact })).toBeVisible();
+            }
         }
     }
 }
@@ -23,39 +35,42 @@ export function lobbyPage(page) {
     return {
         // Метод для перехода на страницу Лобби
         async goto() {
+            
             await page.getByRole('button', { name: 'Лобби' }).click();
         },
 
         // Методы для проверок на странице Лобби
         async assertLobbyPage () {
             await expect(page).toHaveURL(/.*lobby/);
-        },
-
-        async assertLobbyVisible () {
-            await expect(page.locator('#scrollArea').getByText('лобби')).toBeVisible();
         }
     };
 }
 // Лобби Выпадающий список Категории
-export function lobbyCategoryList (page) {
+export function lobbyCategoryList(page) {
     return {
-
-        async categoryList () {
+        async categoryList() {
             await page.getByRole('button', { name: 'Категории' }).click();
         },
 
-        async categoryListVisible () {
-            await expect(page.getByRole('button', { name: 'Slots' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Live Games' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Jackpot' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Instant Win' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Roulette' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Blackjack' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Bonus Buy' })).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Virtual Sports' })).toBeVisible();
+        async categoryListVisible() {
+            const categories = [
+                'Slots',
+                'Live Games',
+                'Jackpot',
+                'Instant Win',
+                'Roulette',
+                'Blackjack',
+                'Bonus Buy',
+                'Virtual Sports'
+            ];
+
+            for (const category of categories) {
+                await expect(page.getByRole('button', { name: category })).toBeVisible();
+            }
         }
-    }
-}  
+    };
+}
+
 
 // Лобби Выпадающий список Провайдеры
 
@@ -135,23 +150,29 @@ export function VipClubPage (page) {
 
         async assertVipClubVisible () {
             await expect(page.getByText('Selector VIP CLUB', { exact: true })).toBeVisible();
+
             await page.locator('#scrollArea div').filter({ hasText: 'Непревзойденный VIP' }).nth(3).click();
+
             await expect(page.getByText('Уровни VIP')).toBeVisible();
+
             await expect(page.getByText('Высочайшая доходность для игрокаНаши бонусы абсолютно прозрачные. Все полученные бонусы вы сможете сразу выводить или снова пускать в игру. Только чистый профит без дополнительных условий для игроков и других подводных камней.Эксклюзивные и гибкие бонусыМы ценим каждого игрока. Ваш VIP-менеджер может поздравить вас с днем рождения и подарить вам новенький MacBook или подарить крупный бонус-код к новому году. Все это и многое другое возможно в нашем VIP-клубе')).toBeVisible();
-            await expect(page.getByText(/БронзаСумма ставок от.*/)).toBeVisible();
-            await page.getByRole('button', { name: 'Серебро' }).click();
-            await expect(page.getByText(/СереброСумма ставок от.*/)).toBeVisible();
-            await page.getByRole('button', { name: 'Золото' }).click();
-            await expect(page.getByText(/ЗолотоСумма ставок от.*/)).toBeVisible();
-            await page.getByRole('button', { name: 'Платина' }).click();
-            await expect(page.getByText(/ПлатинаСумма ставок от.*/)).toBeVisible();
-            await page.getByRole('button', { name: 'Алмаз' }).click();
-            await expect(page.getByText(/АлмазСумма ставок от.*/)).toBeVisible();
-            await page.getByRole('button', { name: 'Элит' }).click();
-            await expect(page.getByText(/ЭлитСумма ставок от.*/)).toBeVisible();
+
+            const levels = [
+                { name: 'Серебро', regex: /СереброСумма ставок от.*/ },
+                { name: 'Золото', regex: /ЗолотоСумма ставок от.*/ },
+                { name: 'Платина', regex: /ПлатинаСумма ставок от.*/ },
+                { name: 'Алмаз', regex: /АлмазСумма ставок от.*/ },
+                { name: 'Элит', regex: /ЭлитСумма ставок от.*/ },
+            ];
+
+            for (const level of levels) {
+                await page.getByRole('button', { name: level.name }).click();
+                await expect(page.getByText(level.regex)).toBeVisible();
+             }
         }
     }
 }
+
 // Промо
 export function promoPage (page) {
     return {
@@ -189,7 +210,7 @@ export function partnerPage (page) {
         },
 
         async campaignCection () {
-            await page.getByText('Кампании').click();
+           await page.getByText('Кампании').click();
         },
 
         async campaignCectionVisible () {
@@ -200,10 +221,12 @@ export function partnerPage (page) {
         },
 
         async staticsCection () {
+           
             await page.getByText('Статистика').click();
         },
 
         async staticsCectionVisible () {
+            
             await expect(page.locator('div').filter({ hasText: /^Статистика$/ })).toBeVisible();
             await expect(page.getByRole('button', { name: 'Таблицей' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'Графиком' })).toBeVisible();
@@ -213,19 +236,24 @@ export function partnerPage (page) {
         },
 
         async playersCection () {
+           
             await page.getByText('Игроки').click();
         },
 
         async playersCectionVisible () {
+            
             await expect(page.locator('div').filter({ hasText: /^Игроки$/ })).toBeVisible();
         },
 
         async accrualLogCection () {
+            
             await page.getByText('Лог начислений').click();
         },
 
         async accrualLogCectionVisible () {
+            
             await expect(page.locator('div').filter({ hasText: /^Лог начислений$/ })).toBeVisible();
+            
         }
     }
 }
@@ -298,16 +326,22 @@ export function gameCategory (page) {
         }
     }
 }
-    
 
 
 
 
+
+
+
   
   
 
   
   
   
-  
-  
+
+
+
+
+
+

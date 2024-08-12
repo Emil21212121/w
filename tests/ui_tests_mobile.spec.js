@@ -1,7 +1,7 @@
 import { test, expect, describe , devices} from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage, mainPage, gameCategory, lobbyCategoryList, lobbyProviderList, dropList} from '../framework/pages/ui_pages_objects';
-import fs from 'fs';
+import {lobbyPage, racePage, promotionsPage, tournamentsPage, VipClubPage, partnerPage, promoPage, mainPage, gameCategory, lobbyCategoryList, lobbyProviderList, dropList} from '../framework/pages/ui_mobile_pages_objects';
+// разобраться с рангами в ВИП клубе , Страница партнеры дроп лист , кошелек локатор кнопки кошелька 
 describe('Тесты навигации', () => {
   let page;
 
@@ -13,6 +13,7 @@ describe('Тесты навигации', () => {
       extraHTTPHeaders: {
         'Accept-Language': 'ru-RU'
       },
+      ...devices['iPhone 11']
   
     });
     page = await context.newPage();
@@ -25,7 +26,12 @@ describe('Тесты навигации', () => {
 
     await page.reload();
 
-    await page.locator('button').first().click();
+    const viewportSize = page.viewportSize();
+    if (viewportSize.width < 900 || viewportSize.height < 856) {
+      await page.getByRole('button', { name: 'Установить' }).click();
+      await page.getByRole('button', { name: 'Назад' }).click();
+    }
+   
  
   });
 
@@ -34,7 +40,7 @@ describe('Тесты навигации', () => {
     await mainPage(page).assertMainVisible();
   }) 
   test('Переход на страницу Лобби', async () => {
-    
+    await dropList(page).burgerMenu();
     // Переходим на страницу Лобби
     await lobbyPage(page).goto();
 
@@ -66,7 +72,7 @@ describe('Тесты навигации', () => {
   });
 
   test('Переход на страницу Промоакций', async () => {
-    
+    await dropList(page).burgerMenu();
 
     // Переходим на страницу Промоакций
     await promotionsPage(page).goto();
@@ -80,7 +86,7 @@ describe('Тесты навигации', () => {
   });
 
   test('Переход на страницу Турниры', async () => {
-    
+    await dropList(page).burgerMenu();
     // Переход на страницу Турниры
     await tournamentsPage(page).goto();
     
@@ -88,9 +94,10 @@ describe('Тесты навигации', () => {
     await tournamentsPage(page).assertTournamentPage();
     await tournamentsPage(page).assertTournamentVisible();
   });
-
+  
+ // Переходим на страницу VIP
   test('Переход на страницу ВИП клуба', async () => {
-    
+    await dropList(page).burgerMenu();
     // Переход на страницу ВИП клуба
     await VipClubPage(page).goto()
 
@@ -101,15 +108,18 @@ describe('Тесты навигации', () => {
 
  // Переходим на страницу Промо
   test ('Переходим на страницу Промо', async () => {
-    
+    await dropList(page).burgerMenu();
 
 // Обработчики
     await promoPage(page).goto();
     await promoPage(page).assertPromoPage();
     await promoPage(page).assertPromoVisible();
   })
-// Переходим на страницу Партнерам
+
   test('Переход на страницу Партнерам', async () => {
+
+    // Переходим на страницу Партнерам
+    await dropList(page).burgerMenu();
 
 // Обработчики
     await partnerPage(page).goto();
@@ -141,38 +151,39 @@ describe('Тесты навигации', () => {
   // Переход по категориям игр
   
   test ('Категории игр', async () => {
-    
+    test.setTimeout(90000);
+    await dropList(page).burgerMenu();
     // Категория Slots
     await gameCategory(page).slotsCategory();
     await gameCategory(page).slotsCategoryVisible();
 
     // Категория Live игры
-    
+    await dropList(page).burgerMenu();
     await gameCategory(page).liveGameCategory();
     await gameCategory(page).liveGameCategoryVisible();
 
     // Категория Jackpots
-    
+    await dropList(page).burgerMenu();
     await gameCategory(page).jackpotCategory();
     await gameCategory(page).jackpotCategoryVisible();
 
      // Категория Instant Win
-     
+     await dropList(page).burgerMenu();
      await gameCategory(page).instantWinCategory()
      await gameCategory(page).instantWinCategoryVisible()
 
      // Категория Рулетка
-     
+     await dropList(page).burgerMenu();
      await gameCategory(page).instantWinCategory()
      await gameCategory(page).instantWinCategoryVisible()
 
      // Категория Blackjack
-     
+     await dropList(page).burgerMenu();
      await gameCategory(page).blackJackCategory();
      await gameCategory(page).blackJackCategoryVisible();
 
     // Категория Bonus buy
-    
+    await dropList(page).burgerMenu();
     await gameCategory(page).bonusBuyCategory();
     await gameCategory(page).bonusBuyCategoryVisible()
 

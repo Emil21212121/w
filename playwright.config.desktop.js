@@ -1,4 +1,4 @@
-const { defineConfig, devices } = require('@playwright/test');
+const { defineConfig } = require('@playwright/test');
 const { PlaywrightTestAllureReporter } = require('allure-playwright');
 
 /**
@@ -10,15 +10,7 @@ const { PlaywrightTestAllureReporter } = require('allure-playwright');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-devices['Mobile Chrome'] = {
-  browserName: 'webkit', // Используем 'webkit' для поддержки Safari
-  'goog:chromeOptions': {
-    mobileEmulation: {
-      deviceName: 'iPhone X' // Например, эмулируем iPhone X
-      // Другие настройки для мобильной эмуляции
-    }
-  }
-};
+
 module.exports = defineConfig({
   testDir: 'tests',
   // Run tests in files in parallel
@@ -47,31 +39,31 @@ module.exports = defineConfig({
     },
     
     // Run in headed mode (with GUI)
-    headless: false, 
+  
   },
 
   // Configure projects for major browsers
   projects: [
-    {
-      name: 'chromium',
-      use: { 
-        ...devices['Desktop Chrome'],
-        // Run in headed mode (with GUI)
-        
-      }
+ 
+ 
+ {
+    name: 'Desktop Chrome',
+    use: {
+      browserName: 'chromium',
+      headless: true,
     },
-    {
-      name: 'chromium-mobile',
-      use: {
-        ...devices['Mobile Chrome'], // Предположим, что 'Mobile Chrome' определен в вашем объекте devices
-        // Настройки для мобильной версии (Mobile Chrome)
-        headless: true, // Пример: запуск в headless режиме для мобильной версии
-        // Другие настройки для мобильной версии
-      }
-    }
-  ],
+  }, 
+  {
+    name: 'Desktop Edge',
+    use: {
+      browserName: 'chromium',
+      channel: 'msedge',
+      headless: true,
+    },
+  }
   
-
+   
+  ],
   // Run your local dev server before starting the tests
   // webServer: {
   //   command: 'npm run start',
