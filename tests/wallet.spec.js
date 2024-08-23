@@ -1,8 +1,8 @@
 import { test, expect, describe } from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay, cryptoCurrency, bitcoin, USDC, Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU, withdrawal, withdrawCardSBP, withdrawCardP2P, withdrawEcorpay, withdrawYuMoney, withdrawPiastrix, withdrawFkWallet, withdrawMobilePayments, withdrawAdvCash, withdrawPayeer } from '../framework/pages/wallet.pages_objects';
-import {exec} from 'child_process'
-import path from 'path';
+import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay, cryptoCurrency, bitcoin, ton, USDC, Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU, withdrawal, withdrawCardSBP, withdrawCardP2P, withdrawEcorpay, withdrawYuMoney, withdrawPiastrix, withdrawFkWallet, withdrawMobilePayments, withdrawAdvCash, withdrawPayeer } from '../framework/pages/wallet.pages_objects';
+
+
 
 describe('Тест Кошелька', () => {
   let page;
@@ -138,6 +138,8 @@ describe('Тест Кошелька', () => {
 
     await cryptoCurrency(page).USDTtokenARB1();
     await checkToken(page).checkTokenVisible();
+
+    await cryptoCurrency(page).USDTtokenTon();
     
   })
 
@@ -148,6 +150,12 @@ describe('Тест Кошелька', () => {
     await checkToken(page).checkTokenVisible();
   })
 
+   // Ton
+   test ('Ton', async () => {
+    await cryptoCurrency(page).gotoCryptoCurrency();
+    await ton(page).gotoTon();
+    await ton(page).tonVisible();
+   })
    // USDC
   test ('USDC', async () => {
     await cryptoCurrency(page).gotoCryptoCurrency();
@@ -366,7 +374,7 @@ test ('Вывод Fk Wallet', async () => {
 test ('Вывод Моб платежи', async () => {
   const mobileOperators = ['Yota', 'Rostelecom', 'SberMobile', 'Tinkoff', 'Tele', 'Bilayn', 'Megafon', 'MTC'];
   
-  await withdrawal(page).gotoWithdrawal();
+  //await withdrawal(page).gotoWithdrawal();
   await withdrawMobilePayments(page).gotoWithdrawMobilePayments();
   await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
 

@@ -196,7 +196,16 @@ export function cryptoCurrency (page) {
 
         async USDTtokenARB1 () {
             await page.getByRole('button', { name: 'ARB1' }).click();
+        }, 
+
+        async USDTtokenTon() {
+            await page.getByRole('button', { name: 'TON' }).click();
+            await page.locator('#header').getByRole('button').nth(1).click();
+            await expect(page.getByRole('textbox').first()).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
         }
+
+       
     }
 }
 
@@ -210,6 +219,21 @@ export function bitcoin (page) {
     }
 }
 
+// ton
+export function ton (page) {
+    return {
+        async gotoTon()  {
+            await page.locator('xpath=//*[@id="scrollArea"]/div/main/div/div/div[2]/div[2]/div/div[1]/div[1]/div[2]/div/button').click();
+            await page.getByRole('button', { name: 'TON 0%' }).click();
+        },
+
+        async tonVisible () {
+            await expect(page.getByRole('textbox').first()).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
+            await expect(page.locator('._qr_5evyv_7104')).toBeVisible();
+        }
+    }
+}
 // USDC
 export function USDC (page) {
     return {

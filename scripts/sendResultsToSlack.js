@@ -3,7 +3,7 @@ const axios = require('axios');
 const path = require('path');
 
 const allureResultsPath = 'allure-results';
-const webhookURL = '';
+const webhookURL = 'https://hooks.slack.com/services/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';
 
 function getAllureSummary(testType) {
   if (!fs.existsSync(allureResultsPath)) {

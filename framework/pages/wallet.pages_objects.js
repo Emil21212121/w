@@ -165,6 +165,7 @@ export function cryptoCurrency (page) {
             await expect(page.getByRole('button', { name: 'Polygon' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'AVAXC' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'ARB1' })).toBeVisible();
+            await expect(page.getByRole('button', { name: 'TON' }).nth(1)).toBeVisible();
         },
 
         async USDTtokenTRC20 () {
@@ -189,6 +190,13 @@ export function cryptoCurrency (page) {
 
         async USDTtokenARB1 () {
             await page.getByRole('button', { name: 'ARB1' }).click();
+        },
+
+        async USDTtokenTon () {
+            await page.getByRole('button', { name: 'TON' }).nth(1).click();
+            await expect(page.getByRole('textbox').nth(1)).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
+            await expect(page.locator('._qr_5evyv_7104')).toBeVisible();
         }
     }
 }
@@ -198,10 +206,23 @@ export function bitcoin (page) {
     return {
         async gotoBitcoin () {
             await page.getByRole('button', { name: 'Bitcoin', exact: true }).click();
+        }
+    }
+}
+
+// Ton
+
+export function ton (page) {
+    return {
+        async gotoTon()  {
+            await page.getByRole('region').getByRole('button', { name: 'TON' }).click();
         },
 
-        async bitcoinVisible () {
-        } 
+        async tonVisible () {
+            await expect(page.getByRole('textbox').nth(1)).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
+            await expect(page.locator('._qr_5evyv_7104')).toBeVisible();
+        }
     }
 }
 

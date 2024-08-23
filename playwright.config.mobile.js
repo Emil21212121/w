@@ -53,7 +53,7 @@ module.exports = defineConfig({
       browserName: 'chromium',
     },
   },
-  /* {
+   {
     name: 'Mobile Safari - iPhone 12',
     use: {
       ...devices['iPhone 12'],
@@ -121,7 +121,7 @@ module.exports = defineConfig({
       viewport: { width: 720, height: 1600 },
       userAgent: 'Mozilla/5.0 (Linux; Android 11; Redmi A2+) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.101 Mobile Safari/537.36',
     },
-  },*/
+  },
   ],
   // Run your local dev server before starting the tests
   // webServer: {
