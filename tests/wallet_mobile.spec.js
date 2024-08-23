@@ -1,6 +1,6 @@
 import { test, expect, describe } from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay , cryptoCurrency, bitcoin, USDC, Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU,withdrawCardSBP,withdrawCardP2P,withdrawEcorpay, withdrawal, withdrawFkWallet,withdrawPiastrix,withdrawYuMoney, withdrawMobilePayments,withdrawPayeer,withdrawAdvCash  } from '../framework/pages/wallet_mobile_pages_objects';
+import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay , cryptoCurrency, bitcoin, ton , USDC, Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU,withdrawCardSBP,withdrawCardP2P,withdrawEcorpay, withdrawal, withdrawFkWallet,withdrawPiastrix,withdrawYuMoney, withdrawMobilePayments,withdrawPayeer,withdrawAdvCash  } from '../framework/pages/wallet_mobile_pages_objects';
 import {exec} from 'child_process'
 
 describe('Тест Кошелька', () => {
@@ -55,7 +55,7 @@ describe('Тест Кошелька', () => {
     await cardChecker(page).cardValueCheckerVisible();
     await cardChecker(page).cardValueCheckerInput()
   }) 
-/*
+
   // EcorPay
   test ('EcorPay', async () => {
     await ecorPay(page).gotoEcorPay();
@@ -137,6 +137,8 @@ describe('Тест Кошелька', () => {
 
     await cryptoCurrency(page).USDTtokenARB1();
     await checkToken(page).checkTokenVisible();
+
+    await cryptoCurrency(page).USDTtokenTon()
     
   })
 
@@ -145,6 +147,13 @@ describe('Тест Кошелька', () => {
     await cryptoCurrency(page).gotoCryptoCurrency();
     await bitcoin(page).gotoBitcoin();
     await checkToken(page).checkTokenVisible();
+  })
+
+  // Ton
+  test ('Ton', async () => {
+    await cryptoCurrency(page).gotoCryptoCurrency();
+    await ton(page).gotoTon()
+    await ton(page).tonVisible()
   })
 
    // USDC
@@ -391,12 +400,6 @@ test ('Вывод AdvCash', async () => {
   await withdrawAdvCash(page).gotoWithdrawAdvCash();
   await withdrawal(page).withdrawalCheck();
 })
-
-*/
-
-
-
-
 
 
 

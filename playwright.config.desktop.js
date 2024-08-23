@@ -50,15 +50,15 @@ module.exports = defineConfig({
     name: 'Desktop Chrome',
     use: {
       browserName: 'chromium',
-      headless: true,
+      headless: false,
     },
   }, 
-  {
+ {
     name: 'Desktop Edge',
     use: {
       browserName: 'chromium',
       channel: 'msedge',
-      headless: true,
+      headless: false,
     },
   }
   
