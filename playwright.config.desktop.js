@@ -53,14 +53,7 @@ module.exports = defineConfig({
       headless: false,
     },
   }, 
- {
-    name: 'Desktop Edge',
-    use: {
-      browserName: 'chromium',
-      channel: 'msedge',
-      headless: false,
-    },
-  }
+
   
    
   ],
