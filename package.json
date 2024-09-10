@@ -25,10 +25,11 @@
     "test-wallet-mobile": "npx playwright test tests/wallet_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
     "test-ui": "npx playwright test tests/ui.spec.js --config=playwright.config.desktop.js || exit 0",
     "test-ui-mobile": "npx playwright test tests/ui_tests_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
-    "test-wallet-and-report-slack": "npm run test-wallet && npm run report && node scripts/sendResultsToSlack.js wallet-desktop",
+    "test-wallet-and-report-slack": "npm run test-wallet",
     "test-wallet-mobile-and-report-slack": "npm run test-wallet-mobile && npm run report && node scripts/sendResultsToSlack.js wallet-mobile",
     "test-ui-and-report-slack": "npm run test-ui && npm run report && node scripts/sendResultsToSlack.js ui-desktop",
-    "test-ui-mobile-and-report-slack": "npm run test-ui-mobile && npm run report && node scripts/sendResultsToSlack.js ui-mobile"
+    "test-ui-mobile-and-report-slack": "npm run test-ui-mobile && npm run report && node scripts/sendResultsToSlack.js ui-mobile",
+    "run-playwright-extra": "node tests/runPlaywrightExtra.js"
   },
   "author": "Emil Qa",
   "license": "MIT",
@@ -39,7 +40,7 @@
     "@babel/preset-env": "^7.24.7",
     "@faker-js/faker": "^8.4.0",
     "@jest/types": "^29.6.3",
-    "@playwright/test": "^1.46.1",
+    "@playwright/test": "^1.47.0",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.14.2",
     "allure-commandline": "^2.29.0",
@@ -62,8 +63,10 @@
     "supertest": "^6.3.4"
   },
   "dependencies": {
+    "@2captcha/captcha-solver": "^1.1.1",
     "dotenv": "^16.4.1",
     "got": "^14.1.0",
-    "playwright": "^1.44.1"
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   }
 }
