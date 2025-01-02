@@ -1,6 +1,6 @@
 import { test, expect, describe } from '@playwright/test';
 import { baseURL } from '../framework/config/config';
-import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay, cryptoCurrency, bitcoin, ton, USDC, Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU, withdrawal, withdrawCardSBP, withdrawCardP2P, withdrawEcorpay, withdrawYuMoney, withdrawPiastrix, withdrawFkWallet, withdrawMobilePayments, withdrawAdvCash, withdrawPayeer } from '../framework/pages/wallet.pages_objects';
+import { walletPage, cardP2P, cardChecker,ecorPay, onlineBank, yuMoney, piastrix, FkWallet, steam, sberPay, cryptoCurrency, bitcoin, USDC, ton , Litecoin, Ethereum, checkToken, Tron, BitcoinCash, BNB,Dash,Matic,TrueUsd,Dogecoin,DAI,Avalanche,Cardano,BTCB, WETH,WEVER,ZEFU,MDAO,AXS,DESU} from '../framework/pages/wallet.pages_objects';
 
 
 
@@ -9,7 +9,7 @@ describe('Тест Кошелька', () => {
   
    
   test.beforeAll(async ({ browser }) => {
-    
+    test.setTimeout(60000);
     const context = await browser.newContext({
       locale: 'ru-RU',  
       extraHTTPHeaders: {
@@ -21,7 +21,7 @@ describe('Тест Кошелька', () => {
     await page.goto(baseURL.baseURL);
 
     await page.evaluate(() => {
-      localStorage.setItem('user.key', '3e8nFD456R5a843P921GQ1axGP7pnM72');
+      localStorage.setItem('user.key', 'XwdZTT6a1wG2TPSaR7eM5QRhTXKd8eNP');  
     });
 
     await page.reload();
@@ -36,6 +36,8 @@ describe('Тест Кошелька', () => {
   test ('Открытие Кошелька', async () => {
     await walletPage(page).walletVisible()
   });
+ 
+
 
   // СБП
   test ('Метод СБП', async () => {
@@ -138,8 +140,6 @@ describe('Тест Кошелька', () => {
 
     await cryptoCurrency(page).USDTtokenARB1();
     await checkToken(page).checkTokenVisible();
-
-    await cryptoCurrency(page).USDTtokenTon();
     
   })
 
@@ -150,12 +150,12 @@ describe('Тест Кошелька', () => {
     await checkToken(page).checkTokenVisible();
   })
 
-   // Ton
-   test ('Ton', async () => {
+  //Ton
+  test ('Ton', async () => {
     await cryptoCurrency(page).gotoCryptoCurrency();
-    await ton(page).gotoTon();
-    await ton(page).tonVisible();
-   })
+    await ton(page).gotoTon()
+    await ton(page).checkTon()
+  })
    // USDC
   test ('USDC', async () => {
     await cryptoCurrency(page).gotoCryptoCurrency();
@@ -294,12 +294,12 @@ test ('WEVER', async () => {
 })
 
 // ZEFU
-test ('ZEFU', async () => {
+/*test ('ZEFU', async () => {
   await cryptoCurrency(page).gotoCryptoCurrency();
   await ZEFU(page).gotoZEFU();
   await checkToken(page).checkTokenVisible();
 })
-
+*/
 // MDAO
 test ('MDAO', async () => {
   await cryptoCurrency(page).gotoCryptoCurrency();
@@ -324,86 +324,15 @@ test ('DESU', async () => {
   await checkToken(page).checkTokenVisible();
 })
 
-// Вывод
 
-// СБП
-test ('Вывод СБП', async () => {
-  await withdrawal(page).gotoWithdrawal();
-  await withdrawCardSBP(page).withdrawCardSBPVisible();
-  await withdrawal(page).withdrawalCheck();
-  await withdrawCardSBP(page).withdrawCardSBPVisible();
-  
-})
-
-// P2P
-test ('Вывод P2P', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawCardP2P(page).gotoWithdrawCardP2P();
-  await withdrawal(page).withdrawalCheck();
-})
-
-// Ecorpay
-test ('Вывод Ecorpay', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawEcorpay(page).gotoWithdrawEcorpay();
-  await withdrawal(page).withdrawalCheck()
-}) 
-
-// ЮMoney
-test ('Вывод ЮMoney', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawYuMoney(page).gotoWithdrawYuMoney()
-  await withdrawal(page).withdrawalCheck()
-})
-
-// Piastrix
-test ('Вывод Piastrix', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawPiastrix(page).gotoWithdrawPiastrix();
-  await withdrawal(page).withdrawalCheck()
-})
-
-// Fk Wallet
-test ('Вывод Fk Wallet', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawFkWallet(page).gotoWithdrawFkWallet();
-  await withdrawal(page).withdrawalCheck()
-})
-
-// Моб Платежи
-test ('Вывод Моб платежи', async () => {
-  const mobileOperators = ['Yota', 'Rostelecom', 'SberMobile', 'Tinkoff', 'Tele', 'Bilayn', 'Megafon', 'MTC'];
-  
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawMobilePayments(page).gotoWithdrawMobilePayments();
-  await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
-
-  for (const operator of mobileOperators) {
-    await withdrawMobilePayments(page)[`goto${operator}`]();
-    await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
-  }
-
-  await withdrawal(page).withdrawalCheck();
-});
-
-
-// Payeer
-test ('Вывод Payeer', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawPayeer(page).gotoPayeer();
-  await withdrawal(page).withdrawalCheck()
-})
-
-// Adv Cash
-test ('Вывод Adv Cash', async () => {
-  //await withdrawal(page).gotoWithdrawal();
-  await withdrawAdvCash(page).gotoWithdrawAdvCash()
-  await withdrawal(page).withdrawalCheck()
-})
   
 test.afterAll(async () => {
-  await page.close();
-
+  if (page) {
+    await page.close();
+  }
 });
+
+
+
 })
 

@@ -371,22 +371,20 @@ test ('Вывод FK Wallet', async () => {
 })
 
 // Вывод Моб платежи
-test ('Вывод Моб платежи', async () => {
-  const mobileOperators = ['Yota', 'Rostelecom', 'SberMobile', 'Tinkoff', 'Tele', 'Bilayn', 'Megafon', 'MTC'];
-  
-  
+test('Вывод Моб платежи', async () => {
+  const mobileOperators = ['Yota', 'Rostelecom', 'Sber Mobile', 'Tinkoff', 'Теле', 'Билайн', 'Мегафон', 'МТС'];
+
+  // Вызов методов напрямую
   await withdrawMobilePayments(page).gotoWithdrawMobilePayments();
   await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
 
   for (const operator of mobileOperators) {
-    await withdrawMobilePayments(page)[`goto${operator}`]();
-    await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
+      await withdrawMobilePayments(page).gotoOperator(operator);
+      await withdrawMobilePayments(page).withdrawMobilePaymentsVisible();
   }
 
   await withdrawal(page).withdrawalCheck();
 });
-
-
 // Вывод Payeer
 test ('Вывод Payeer', async () => {
   test.setTimeout(90000);

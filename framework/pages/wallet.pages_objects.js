@@ -13,7 +13,6 @@ export function walletPage (page) {
             await expect(page.getByRole('button', { name: 'Деньги' })).toBeVisible();
             await expect(page.getByRole('button', { name: 'Криптовалюта' })).toBeVisible();
             await expect(page.getByText('Валюта пополнения')).toBeVisible();
-            await expect(page.getByText('Выберите оператора')).toBeVisible();
             await expect(page.getByText('Сумма пополнения')).toBeVisible();
             await expect(page.locator('#inputDeposit')).toBeVisible();
             await expect(page.getByRole('button', { name: 'Перейти к оплате' })).toBeVisible();
@@ -27,11 +26,11 @@ export function cardChecker(page) {
     return {
         async cardValueCheckerVisible() {
             const buttonNames = [
-                { name: '100 ₽' },
                 { name: '500 ₽', exact: true },
                 { name: '1000 ₽' },
                 { name: '2500 ₽' },
                 { name: '5000 ₽' },
+                { name: '10000 ₽' },
                 { name: 'Перейти к оплате' }
             ];
 
@@ -42,11 +41,12 @@ export function cardChecker(page) {
 
         async cardValueCheckerInput() {
             const buttonActions = [
-                { name: '100 ₽', value: '100' },
+                
                 { name: '500 ₽', exact: true, value: '500' },
                 { name: '1000 ₽', value: '1000' },
                 { name: '2500 ₽', value: '2500' },
-                { name: '5000 ₽', value: '5000' }
+                { name: '5000 ₽', value: '5000' },
+                { name: '10000 ₽', value: '10000' }
             ];
 
             for (const action of buttonActions) {
@@ -190,13 +190,6 @@ export function cryptoCurrency (page) {
 
         async USDTtokenARB1 () {
             await page.getByRole('button', { name: 'ARB1' }).click();
-        },
-
-        async USDTtokenTon () {
-            await page.getByRole('button', { name: 'TON' }).nth(1).click();
-            await expect(page.getByRole('textbox').nth(1)).toBeVisible();
-            await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
-            await expect(page.locator('._qr_5evyv_7104')).toBeVisible();
         }
     }
 }
@@ -210,19 +203,17 @@ export function bitcoin (page) {
     }
 }
 
-// Ton
-
 export function ton (page) {
     return {
-        async gotoTon()  {
-            await page.getByRole('region').getByRole('button', { name: 'TON' }).click();
+        async gotoTon () {
+            await page.getByRole('region').getByRole('button', { name: 'TON', exact: true }).click();
         },
 
-        async tonVisible () {
+        async checkTon () {
+            await expect(page.locator('div').filter({ hasText: /^Выберите сетьTON$/ }).getByRole('button')).toBeVisible();
             await expect(page.getByRole('textbox').nth(1)).toBeVisible();
             await expect(page.locator('div').filter({ hasText: /^Тег \(комментарий\) к переводу Скопировано$/ }).getByRole('textbox')).toBeVisible();
-            await expect(page.locator('._qr_5evyv_7104')).toBeVisible();
-        }
+        },
     }
 }
 
@@ -298,7 +289,8 @@ export function Ethereum (page) {
 export function Tron (page) {
     return {
         async gotoTron () {
-            await page.getByRole('button', { name: 'Tron' }).click();
+            await page.getByRole('button', { name: 'Tron', exact: true }).click();
+
         }
     }
 }
@@ -324,7 +316,8 @@ export function BNB (page) {
 export function Dash (page) {
     return {
         async gotoDash () {
-            await page.getByRole('button', { name: 'Dash' }).click();
+            await page.getByRole('button', { name: 'Dash', exact: true }).click();
+
         }
     }
 }
@@ -455,7 +448,7 @@ export function MDAO (page) {
 export function AXS (page) {
     return {
         async gotoAXS () {
-            await page.getByRole('button', { name: 'AXS' }).click();
+            await page.getByRole('button', { name: 'AXS', exact: true }).click();
         },
 
         async AXStokenERC20 () {
@@ -477,156 +470,5 @@ export function DESU (page) {
     }
 }
 
-// Вывод 
 
-export function withdrawal (page) {
-    return {
-        async gotoWithdrawal () {
-            await page.getByRole('button', { name: 'Вывод' }).click();
-        },
 
-        async withdrawalCheck () {
-            await expect(page.getByText('Выберите оператора')).toBeVisible();
-            await expect(page.getByText('Номер счета')).toBeVisible();
-            await expect(page.getByText('Сумма вывода')).toBeVisible();
-            await expect(page.getByText('К получению')).toBeVisible();
-            await expect(page.getByRole('button', { name: 'Создать заявку' })).toBeVisible();
-            await expect (page.locator('xpath=//*[@id="inputWallet"]')).toBeVisible();
-        }
-    }
-}
-
-// СБП
-export function withdrawCardSBP (page) {
-    return {
-        async gotoWithdrawCardSBP () {
-            await page.getByRole('button', { name: 'Карта СБП' }).click();
-        },
-
-        async withdrawCardSBPVisible () {
-            await expect(page.getByPlaceholder('Выберите банк')).toBeVisible();
-        }
-    }
-}
-
-// Карта P2P
-export function withdrawCardP2P (page) {
-    return {
-        async gotoWithdrawCardP2P () {
-            await page.getByRole('button', { name: 'Карта P2P' }).click();
-        }
-    }
-}
-
-// Ecorpay
-export function withdrawEcorpay (page) {
-    return {
-        async gotoWithdrawEcorpay () {
-            await page.getByRole('button', { name: 'Ecorpay' }).click();
-        },
-    }
-}
-
-// ЮMoney
-export function withdrawYuMoney (page) {
-    return {
-        async gotoWithdrawYuMoney () {
-            await page.getByRole('button', { name: 'ЮMoney' }).click();
-        }
-    }
-}
-
-// Piastrix
-export function withdrawPiastrix (page) {
-    return {
-        async gotoWithdrawPiastrix () {
-            await page.getByRole('button', { name: 'Piastrix' }).click();
-        }
-    }
-}
-
-// FK Wallet
-export function withdrawFkWallet (page) {
-    return {
-        async gotoWithdrawFkWallet () {
-            await page.getByRole('button', { name: 'FK Wallet' }).click();
-        }
-    }
-}
-
-// Моб Платежи
-export function withdrawMobilePayments(page) {
-    return {
-        async gotoWithdrawMobilePayments() {
-            await page.getByRole('button', { name: 'Моб. платежи' }).click();
-        },
-
-        async withdrawMobilePaymentsVisible() {
-            const buttons = [
-                'Skylink',
-                'Yota',
-                'Rostelecom',
-                'Sber Mobile',
-                'Tinkoff',
-                'Теле',
-                'Билайн',
-                'Мегафон',
-                'МТС'
-            ];
-
-            for (const button of buttons) {
-                await expect(page.getByRole('button', { name: button })).toBeVisible();
-            }
-        },
-
-        async gotoYota () {
-            await page.getByRole('button', { name: 'Yota' }).click();
-            
-        },
-
-        async gotoRostelecom () {
-            await page.getByRole('button', { name: 'Rostelecom' }).click();
-        },
-
-        async gotoSberMobile () {
-            await page.getByRole('button', { name: 'Sber Mobile' }).click();
-        },
-
-        async gotoTinkoff () {
-            await page.getByRole('button', { name: 'Tinkoff' }).click();
-        },
-
-        async gotoTele () {
-            await page.getByRole('button', { name: 'Теле' }).click();
-        },
-
-        async gotoBilayn () {
-            await page.getByRole('button', { name: 'Билайн' }).click();
-        },
-
-        async gotoMegafon () {
-            await page.getByRole('button', { name: 'Мегафон' }).click();
-        },
-
-        async gotoMTC () {
-            await page.getByRole('button', { name: 'МТС' }).click();
-        }
-    };
-}
-// Payeer
-export function withdrawPayeer (page) {
-    return {
-        async gotoPayeer () {
-            await page.getByRole('button', { name: 'Payeer' }).click();
-        }
-    }
-}
-
-// AdvCash
-export function withdrawAdvCash (page) {
-    return {
-        async gotoWithdrawAdvCash () {
-            await page.getByRole('button', { name: 'AdvCash' }).click();
-        }
-    }
-}

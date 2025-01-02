@@ -3,12 +3,16 @@ const axios = require('axios');
 const path = require('path');
 
 const allureResultsPath = 'allure-results';
-const webhookURL = 'https://hooks.slack.com/services/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';
+const webhookURL = ''; //https://hooks.slack.com/services/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
+const allureReportURL = 'http://65.109.97.229:8080/job/Selector_wallet_test/allure/';
 
 function getAllureSummary(testType) {
   if (!fs.existsSync(allureResultsPath)) {
     console.error(`Директория ${allureResultsPath} не найдена.`);
-    return 'Отчет не может быть собран: директория с результатами отсутствует.';
+    return {
+      message: 'Отчет не может быть собран: директория с результатами отсутствует.',
+      failedOrBroken: false,
+    };
   }
 
   const files = fs.readdirSync(allureResultsPath);
@@ -31,12 +35,18 @@ function getAllureSummary(testType) {
     }
   });
 
-  return `${testType}:\nОбщее количество тестов: ${totalTests}\nУспешно: ${passedTests}\nПровалено: ${failedTests}\nПропущено: ${skippedTests}\nСломано: ${brokenTests}`;
+  const summaryMessage = `${testType}:\nОбщее количество тестов: ${totalTests}\nУспешно: ${passedTests}\nПровалено: ${failedTests}\nПропущено: ${skippedTests}\nСломано: ${brokenTests}`;
+  
+  return {
+    message: summaryMessage,
+    failedOrBroken: failedTests > 0 || brokenTests > 0,
+  };
 }
 
 const sendMessageToSlack = async (message) => {
+  const fullMessage = `${message}\n[Посмотреть полный Allure отчет](${allureReportURL})`;
   try {
-    const response = await axios.post(webhookURL, { text: message });
+    const response = await axios.post(webhookURL, { text: fullMessage });
     console.log('Сообщение успешно отправлено в Slack:', response.data);
   } catch (error) {
     console.error('Ошибка при отправке сообщения в Slack:', error);
@@ -50,7 +60,7 @@ const sendMessageToSlack = async (message) => {
 
   switch (testType) {
     case 'wallet-desktop':
-      summary = getAllureSummary('Кошелек тесты десктоп');
+      summary = getAllureSummary('Кошелек Пополнение тесты десктоп');
       break;
     case 'wallet-mobile':
       summary = getAllureSummary('Кошелек тесты мобайл');
@@ -63,10 +73,17 @@ const sendMessageToSlack = async (message) => {
       break;
     default:
       console.warn('Неизвестный тип тестов:', testType);
-      summary = 'Не удалось собрать отчет: неизвестный тип тестов.';
+      summary = {
+        message: 'Не удалось собрать отчет: неизвестный тип тестов.',
+        failedOrBroken: false,
+      };
       break;
   }
 
-  await sendMessageToSlack(summary);
+ 
+  if (summary.failedOrBroken) {
+    await sendMessageToSlack(summary.message);
+  } else {
+    console.log('Все тесты прошли успешно, сообщение в Slack не отправлено.');
+  }
 })();
-

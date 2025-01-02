@@ -25,7 +25,7 @@
     "test-wallet-mobile": "npx playwright test tests/wallet_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
     "test-ui": "npx playwright test tests/ui.spec.js --config=playwright.config.desktop.js || exit 0",
     "test-ui-mobile": "npx playwright test tests/ui_tests_mobile.spec.js --config=playwright.config.mobile.js || exit 0",
-    "test-wallet-and-report-slack": "npm run test-wallet && npm run report && node scripts/sendResultsToSlack.js wallet-desktop",
+    "test-wallet-and-report-slack": "npm run clean-results-after-report && npm run test-wallet && npm run report && node scripts/sendResultsToSlack.js wallet-desktop ",
     "test-wallet-mobile-and-report-slack": "npm run test-wallet-mobile && npm run report && node scripts/sendResultsToSlack.js wallet-mobile",
     "test-ui-and-report-slack": "npm run test-ui && npm run report && node scripts/sendResultsToSlack.js ui-desktop",
     "test-ui-mobile-and-report-slack": "npm run test-ui-mobile && npm run report && node scripts/sendResultsToSlack.js ui-mobile"

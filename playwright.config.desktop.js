@@ -52,16 +52,9 @@ module.exports = defineConfig({
       browserName: 'chromium',
       headless: false,
     },
+    retries:0
   }, 
- {
-    name: 'Desktop Edge',
-    use: {
-      browserName: 'chromium',
-      channel: 'msedge',
-      headless: false,
-    },
-  }
-  
+
    
   ],
   // Run your local dev server before starting the tests
